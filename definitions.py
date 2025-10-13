@@ -448,5 +448,17 @@ VENDOR_SUBCMD_ENUMS = {
             2: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_CHANGE_IFACE_TYPE', 'type': 'u32'},
             3: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_CHANGE_IFACE_RESULT', 'type': "s32" }
         }
+    },
+    65044: {
+        "name": "QCA_NL80211_VENDOR_SUBCMD_WIFIDBG_ADD_KEY",
+        "initial_rule": "attrs",
+        "attrs": {
+            0: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_ADD_KEY_INVALID', 'type': 'u32'},
+            1: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_ADD_KEY_IFNAME', 'type': 'string'},
+            2: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_ADD_KEY_INDEX', 'type': 'u8'},
+            3: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_ADD_KEY_PAIRWISE', 'type': 'u8'},
+            4: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_ADD_KEY_MAC_ADDR', 'type': 'mac_address'},
+            5: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_ADD_KEY_RESULT', 'type': 's32'}
+        }
     }
 }

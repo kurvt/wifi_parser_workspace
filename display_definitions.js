@@ -820,5 +820,31 @@ const DISPLAY_MAPPINGS = {
                 "error_values": ["1"]
             }
         }
+    },
+    "QCA_NL80211_VENDOR_SUBCMD_WIFIDBG_ADD_KEY": {
+        "friendly_name": "添加WiFi密钥 (ADD_KEY)",
+        "attributes": {
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_ADD_KEY_INVALID": { "label": "无效参数" },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_ADD_KEY_IFNAME": { "label": "接口名" },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_ADD_KEY_INDEX": { "label": "密钥索引" },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_ADD_KEY_PAIRWISE": {
+                "label": "密钥类型",
+                "values": {
+                    "0": "组播密钥 (Group Key)",
+                    "1": "单播密钥 (Pairwise Key)"
+                }
+            },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_ADD_KEY_MAC_ADDR": { "label": "关联MAC地址" },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_ADD_KEY_RESULT": {
+                "label": "添加结果",
+                "values": {
+                    "0": "成功",
+                    "-22": "Invalid argument",
+                    "-12": "Out of memory",
+                    "-16": "Device or resource busy"
+                },
+                "error_values": ["-22", "-12", "-16"]
+            }
+        }
     }
 }
