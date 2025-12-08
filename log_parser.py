@@ -91,6 +91,14 @@ def format_data_value(payload: bytes, data_type: str = 'hex') -> tuple[Union[str
             return payload.rstrip(b'\x00').decode('utf-8', errors='ignore'), hex_data
         if data_type == 'mac_address' and len(payload) == 6:
             return ':'.join(f'{b:02x}' for b in payload), hex_data
+        
+        # 频率列表 (每4字节一个u32频率值)
+        if data_type == 'channel_list' and len(payload) % 4 == 0:
+            frequencies = []
+            for i in range(0, len(payload), 4):
+                freq = struct.unpack('<I', payload[i:i+4])[0]
+                frequencies.append(f"{freq} MHz")
+            return ", ".join(frequencies), hex_data
             
     except (struct.error, UnicodeDecodeError):
         # 如果解析失败，则回退到十六进制
