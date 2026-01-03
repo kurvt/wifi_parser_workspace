@@ -476,7 +476,10 @@ def format_timestamp(timestamp_str: str) -> str:
 def has_error_result(event: Dict, display_defs: Dict) -> bool:
     """
     检查事件是否包含错误结果。
-    检查所有 _RESULT 字段，如果值不为 "0" 则认为是错误。
+    优先级：
+    1. 如果字段有 error_values 定义，只有值在 error_values 中才是错误
+    2. 如果字段有 success_values 定义，值不在 success_values 中才是错误
+    3. 否则使用默认逻辑：以 _RESULT 结尾的字段非0即错误
     """
     subcmd_name = event['subcmd_name']
     attr_defs = display_defs.get(subcmd_name, {}).get('attributes', {})
@@ -484,16 +487,29 @@ def has_error_result(event: Dict, display_defs: Dict) -> bool:
     # 使用扁平化函数获取所有属性值
     data_map = _flatten_tree_for_data_lookup(event['tree'])
     
-    # 检查在 display_definitions.js 中定义的错误值
-    for attr_name, attr_def in attr_defs.items():
-        if "error_values" in attr_def:
-            value = data_map.get(attr_name)
-            if value is not None and str(value) in attr_def["error_values"]:
-                return True
-    
-    # 检查任何未定义的 _RESULT 字段
+    # 检查所有字段
     for attr_name, value in data_map.items():
-        if "_RESULT" in attr_name and str(value) != "0":
+        if value is None:
+            continue
+            
+        attr_def = attr_defs.get(attr_name, {})
+        
+        # 优先级1：如果定义了 error_values，只检查是否在错误值列表中
+        if "error_values" in attr_def:
+            if str(value) in attr_def["error_values"]:
+                return True
+            # 如果有 error_values 定义，就不再使用其他逻辑
+            continue
+        
+        # 优先级2：如果定义了 success_values，检查是否不在成功值列表中
+        if "success_values" in attr_def:
+            if str(value) not in attr_def["success_values"]:
+                return True
+            continue
+        
+        # 优先级3：对于以 _RESULT 结尾的字段，使用默认逻辑（非0即错误）
+        # 注意：这里只检查以_RESULT结尾的字段，避免误判中间包含_RESULT的字段
+        if attr_name.endswith("_RESULT") and str(value) != "0":
             return True
     
     return False

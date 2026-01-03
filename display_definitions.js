@@ -1019,5 +1019,173 @@ const DISPLAY_MAPPINGS = {
                 "error_values": ["-22", "-95"]
             }
         }
+    },
+    "QCA_NL80211_VENDOR_SUBCMD_WIFIDBG_STA_CONNECT_RESULT": {
+        "friendly_name": "STA连接结果 (STA_CONNECT_RESULT)",
+        "attributes": {
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_CONNECT_RESULT_INVALID": { "label": "无效参数" },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_CONNECT_RESULT_BSSID": { "label": "目标AP的BSSID" },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_CONNECT_RESULT_STATUS_CODE": {
+                "label": "IEEE 802.11状态码",
+                "note": "标准802.11协议状态码",
+                "values": {
+                    "0": "成功 (SUCCESS)",
+                    "1": "未指定失败 (UNSPECIFIED_FAILURE)",
+                    "10": "不支持的能力 (CAPS_UNSUPPORTED)",
+                    "11": "无法确认重关联 (REASSOC_NO_ASSOC)",
+                    "12": "关联被拒绝-未指定 (ASSOC_DENIED_UNSPEC)",
+                    "13": "不支持的认证算法 (NOT_SUPPORTED_AUTH_ALG)",
+                    "15": "挑战失败 (CHALLENGE_FAIL)",
+                    "16": "认证超时 (AUTH_TIMEOUT)",
+                    "17": "AP无法处理新STA (AP_UNABLE_TO_HANDLE_NEW_STA)",
+                    "22": "无效的RSN IE能力 (INVALID_RSN_IE_CAPAB)",
+                    "34": "密码套件被拒绝 (CIPHER_SUITE_REJECTED)",
+                    "40": "无效的信息元素 (INVALID_IE)",
+                    "41": "无效的组密码 (INVALID_GROUP_CIPHER)",
+                    "42": "无效的成对密码 (INVALID_PAIRWISE_CIPHER)",
+                    "43": "无效的AKMP (INVALID_AKMP)",
+                    "44": "不支持的RSN IE版本 (UNSUPPORTED_RSN_IE_VERSION)",
+                    "45": "无效的RSN IE能力 (INVALID_RSN_IE_CAPAB)",
+                    "46": "密码被拒绝 (CIPHER_REJECTED)",
+                    "65528": "找不到网络 (NO_NETWORK_FOUND)",
+                    "65529": "认证帧发送失败 (AUTH_TX_FAIL)",
+                    "65530": "认证帧未收到ACK (AUTH_NO_ACK_RECEIVED)",
+                    "65531": "认证帧未收到响应 (AUTH_NO_RESP_RECEIVED)",
+                    "65532": "关联帧发送失败 (ASSOC_TX_FAIL)",
+                    "65533": "关联帧未收到ACK (ASSOC_NO_ACK_RECEIVED)",
+                    "65534": "关联帧未收到响应 (ASSOC_NO_RESP_RECEIVED)"
+                },
+                "error_values": ["1", "10", "11", "12", "13", "15", "16", "17", "22", "34", "40", "41", "42", "43", "44", "45", "46", "65528", "65529", "65530", "65531", "65532", "65533", "65534"]
+            },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_CONNECT_RESULT_REASON": {
+                "label": "CM连接失败原因",
+                "note": "驱动内部连接管理器失败原因码",
+                "values": {
+                    "0": "成功",
+                    "1": "没有找到候选AP (CM_NO_CANDIDATE_FOUND)",
+                    "2": "收到新请求而中止 (CM_ABORT_DUE_TO_NEW_REQ_RECVD)",
+                    "3": "BSS选择指示失败 (CM_BSS_SELECT_IND_FAILED)",
+                    "4": "对等体创建失败 (CM_PEER_CREATE_FAILED)",
+                    "5": "加入失败 (CM_JOIN_FAILED)",
+                    "6": "加入超时 (CM_JOIN_TIMEOUT)",
+                    "7": "认证被AP拒绝 (CM_AUTH_FAILED)",
+                    "8": "认证超时 (CM_AUTH_TIMEOUT)",
+                    "9": "关联被AP拒绝 (CM_ASSOC_FAILED)",
+                    "10": "关联超时 (CM_ASSOC_TIMEOUT)",
+                    "11": "硬件模式切换失败 (CM_HW_MODE_FAILURE)",
+                    "12": "序列化命令失败 (CM_SER_FAILURE)",
+                    "13": "序列化命令超时 (CM_SER_TIMEOUT)",
+                    "14": "通用失败 (CM_GENERIC_FAILURE)",
+                    "15": "有效候选检查失败 (CM_VALID_CANDIDATE_CHECK_FAIL)"
+                },
+                "error_values": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"]
+            },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_CONNECT_RESULT_FREQ": { "label": "连接频率 (MHz)" },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_CONNECT_RESULT_IFNAME": { "label": "网络接口名" }
+        }
+    },
+    "QCA_NL80211_VENDOR_SUBCMD_WIFIDBG_STA_DISCONNECT_RESULT": {
+        "friendly_name": "STA断开连接结果 (STA_DISCONNECT_RESULT)",
+        "attributes": {
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_DISCONNECT_RESULT_INVALID": { "label": "无效参数" },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_DISCONNECT_RESULT_BSSID": { "label": "断开AP的BSSID" },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_DISCONNECT_RESULT_REASON_CODE": {
+                "label": "IEEE 802.11断开原因码",
+                "note": "标准802.11协议断开原因",
+                "values": {
+                    "1": "未指定原因 (UNSPECIFIED)",
+                    "2": "先前认证无效 (PREV_AUTH_NOT_VALID)",
+                    "3": "设备离开BSS (DEAUTH_LEAVING)",
+                    "4": "由于不活动 (DISASSOC_DUE_TO_INACTIVITY)",
+                    "5": "AP无法处理所有STA (DISASSOC_AP_BUSY)",
+                    "6": "从非认证设备接收到帧 (CLASS2_FRAME_FROM_NONAUTH_STA)",
+                    "7": "从非关联设备接收到帧 (CLASS3_FRAME_FROM_NONASSOC_STA)",
+                    "8": "设备离开网络 (DISASSOC_STA_HAS_LEFT)",
+                    "9": "需要重新认证 (STA_REQ_ASSOC_WITHOUT_AUTH)",
+                    "15": "4次握手超时 (4WAY_HANDSHAKE_TIMEOUT)",
+                    "23": "IEEE 802.1X认证失败 (IEEE_8021X_AUTH_FAILED)"
+                }
+            },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_DISCONNECT_RESULT_CM_REASON": {
+                "label": "连接管理器断开原因",
+                "note": "驱动内部断开原因码 (与连接失败原因相同)",
+                "values": {
+                    "0": "成功/正常断开",
+                    "1": "没有找到候选AP (CM_NO_CANDIDATE_FOUND)",
+                    "2": "收到新请求而中止 (CM_ABORT_DUE_TO_NEW_REQ_RECVD)",
+                    "3": "BSS选择指示失败 (CM_BSS_SELECT_IND_FAILED)",
+                    "4": "对等体创建失败 (CM_PEER_CREATE_FAILED)",
+                    "5": "加入失败 (CM_JOIN_FAILED)",
+                    "6": "加入超时 (CM_JOIN_TIMEOUT)",
+                    "7": "认证被AP拒绝 (CM_AUTH_FAILED)",
+                    "8": "认证超时 (CM_AUTH_TIMEOUT)",
+                    "9": "关联被AP拒绝 (CM_ASSOC_FAILED)",
+                    "10": "关联超时 (CM_ASSOC_TIMEOUT)",
+                    "11": "硬件模式切换失败 (CM_HW_MODE_FAILURE)",
+                    "12": "序列化命令失败 (CM_SER_FAILURE)",
+                    "13": "序列化命令超时 (CM_SER_TIMEOUT)",
+                    "14": "通用失败 (CM_GENERIC_FAILURE)",
+                    "15": "有效候选检查失败 (CM_VALID_CANDIDATE_CHECK_FAIL)"
+                }
+            },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_DISCONNECT_RESULT_SOURCE": {
+                "label": "断开来源",
+                "note": "标识断开操作的发起来源",
+                "values": {
+                    "0": "连接操作 (CM_OSIF_CONNECT)",
+                    "1": "主机发起漫游 (CM_ROAMING_HOST)",
+                    "2": "网络不可达检测失败漫游 (CM_ROAMING_NUD_FAILURE)",
+                    "3": "固件发起漫游 (CM_ROAMING_FW)",
+                    "4": "链路移除漫游 (CM_ROAMING_LINK_REMOVAL)",
+                    "5": "OSIF/用户空间发起断开 (CM_OSIF_DISCONNECT)",
+                    "6": "对端发起断开 (CM_PEER_DISCONNECT)",
+                    "7": "南向发起断开 (CM_SB_DISCONNECT)"
+                }
+            },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_DISCONNECT_RESULT_IFNAME": { "label": "网络接口名" },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_DISCONNECT_RESULT_LOCALLY_GENERATED": {
+                "label": "断开发起方",
+                "values": {
+                    "0": "远端发起 (AP主动断开)",
+                    "1": "本地发起 (STA主动断开)"
+                }
+            }
+        }
+    },
+    "QCA_NL80211_VENDOR_SUBCMD_WIFIDBG_AUTH_RESULT": {
+        "friendly_name": "AP模式-客户端认证结果 (AUTH_RESULT)",
+        "attributes": {
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_AUTH_RESULT_INVALID": { "label": "无效参数" },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_AUTH_RESULT_IFNAME": { "label": "网络接口名" },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_AUTH_RESULT_MAC_ADDR": { "label": "客户端MAC地址" },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_AUTH_RESULT_STATUS": {
+                "label": "认证状态",
+                "values": {
+                    "0": "认证成功",
+                    "1": "认证失败"
+                },
+                "error_values": ["1"]
+            },
+            "QCA_WLAN_VENDOR_ATTR_WIFIDBG_AUTH_RESULT_REASON": {
+                "label": "IEEE 802.11失败原因码",
+                "note": "仅在认证失败时出现",
+                "values": {
+                    "1": "未指定原因 (UNSPECIFIED)",
+                    "2": "先前认证无效 (PREV_AUTH_NOT_VALID)",
+                    "3": "设备离开BSS (DEAUTH_LEAVING)",
+                    "4": "由于不活动 (DISASSOC_DUE_TO_INACTIVITY)",
+                    "5": "AP无法处理所有STA (DISASSOC_AP_BUSY)",
+                    "6": "从非认证设备接收到帧 (CLASS2_FRAME_FROM_NONAUTH_STA)",
+                    "7": "从非关联设备接收到帧 (CLASS3_FRAME_FROM_NONASSOC_STA)",
+                    "8": "设备离开网络 (DISASSOC_STA_HAS_LEFT)",
+                    "9": "需要重新认证 (STA_REQ_ASSOC_WITHOUT_AUTH)",
+                    "13": "不支持的认证算法 (NOT_SUPPORTED_AUTH_ALG)",
+                    "15": "4次握手超时 (4WAY_HANDSHAKE_TIMEOUT)",
+                    "16": "认证超时 (AUTH_TIMEOUT)",
+                    "23": "IEEE 802.1X认证失败 (IEEE_8021X_AUTH_FAILED)",
+                    "34": "密码套件被拒绝 (CIPHER_SUITE_REJECTED)"
+                }
+            }
+        }
     }
 }

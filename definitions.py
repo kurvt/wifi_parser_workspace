@@ -493,5 +493,41 @@ VENDOR_SUBCMD_ENUMS = {
             3: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_SET_POWER_MGMT_TIMEOUT', 'type': 'u32'},
             4: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_SET_POWER_MGMT_RESULT', 'type': 's32'}
         }
+    },
+    65048: {
+        "name": "QCA_NL80211_VENDOR_SUBCMD_WIFIDBG_STA_CONNECT_RESULT",
+        "initial_rule": "attrs",
+        "attrs": {
+            0: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_CONNECT_RESULT_INVALID', 'type': 'u32'},
+            1: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_CONNECT_RESULT_BSSID', 'type': 'mac_address'},
+            2: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_CONNECT_RESULT_STATUS_CODE', 'type': 'u32'},
+            3: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_CONNECT_RESULT_REASON', 'type': 'u32'},
+            4: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_CONNECT_RESULT_FREQ', 'type': 'u32'},
+            5: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_CONNECT_RESULT_IFNAME', 'type': 'string'}
+        }
+    },
+    65049: {
+        "name": "QCA_NL80211_VENDOR_SUBCMD_WIFIDBG_STA_DISCONNECT_RESULT",
+        "initial_rule": "attrs",
+        "attrs": {
+            0: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_DISCONNECT_RESULT_INVALID', 'type': 'u32'},
+            1: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_DISCONNECT_RESULT_BSSID', 'type': 'mac_address'},
+            2: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_DISCONNECT_RESULT_REASON_CODE', 'type': 'u16'},
+            3: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_DISCONNECT_RESULT_CM_REASON', 'type': 'u32'},
+            4: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_DISCONNECT_RESULT_SOURCE', 'type': 'u32'},
+            5: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_DISCONNECT_RESULT_IFNAME', 'type': 'string'},
+            6: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_STA_DISCONNECT_RESULT_LOCALLY_GENERATED', 'type': 'u8'}
+        }
+    },
+    65050: {
+        "name": "QCA_NL80211_VENDOR_SUBCMD_WIFIDBG_AUTH_RESULT",
+        "initial_rule": "attrs",
+        "attrs": {
+            0: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_AUTH_RESULT_INVALID', 'type': 'u32'},
+            1: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_AUTH_RESULT_IFNAME', 'type': 'string'},
+            2: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_AUTH_RESULT_MAC_ADDR', 'type': 'mac_address'},
+            3: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_AUTH_RESULT_STATUS', 'type': 'u32'},
+            4: {'name': 'QCA_WLAN_VENDOR_ATTR_WIFIDBG_AUTH_RESULT_REASON', 'type': 'u32'}
+        }
     }
 }
