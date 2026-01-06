@@ -58,13 +58,13 @@
 
 1. **解析日志**:
    ```bash
-   python log_parser.py examples/wifidebug --output-txt parsed.txt --output-json parsed.json
-   python log_parser.py wifidebug --output-txt parsed.txt --output-json parsed.json
+   python3 log_parser.py examples/wifidebug --output-txt parsed.txt --output-json parsed.json
+   python3 log_parser.py wifidebug --output-txt parsed.txt --output-json parsed.json
    ```
 
 2. **生成报告**:
    ```bash
-   python report_generator.py
+   python3 report_generator.py
    ```
 
 3. **查看结果**: 用浏览器打开`report.html`
