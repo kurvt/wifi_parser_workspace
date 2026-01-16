@@ -119,6 +119,12 @@ def main():
             st.info("等待文件上传...")
         else:
             st.success(st.session_state.parsing_status)
+            
+            # 如果有统计信息，显示摘要
+            if 'total_events' in st.session_state:
+                st.metric("总事件数", st.session_state.total_events)
+                if st.session_state.events_with_unknown > 0:
+                    st.warning(f"⚠️ {st.session_state.events_with_unknown} 个事件包含未知字段")
 
 def process_file(uploaded_file):
     """处理上传的文件并生成报告"""
@@ -209,14 +215,58 @@ def process_file(uploaded_file):
             status_text.text("✅ 解析完成!")
             progress_bar.progress(100)
             
+            # 读取并分析JSON数据以检查未知字段
+            import json as json_module
+            try:
+                parsed_data = json_module.loads(json_content)
+                unknown_summary = parsed_data.get("unknown_fields_summary", {})
+                total_events = parsed_data.get("total_events", 0)
+                events_with_unknown = parsed_data.get("events_with_unknown_fields", 0)
+            except:
+                unknown_summary = {}
+                total_events = 0
+                events_with_unknown = 0
+            
             # 更新会话状态
             st.session_state.parsing_status = "解析成功完成!"
             st.session_state.html_report = html_content
             st.session_state.json_data = json_content
             st.session_state.original_filename = uploaded_file.name
+            st.session_state.unknown_summary = unknown_summary
+            st.session_state.total_events = total_events
+            st.session_state.events_with_unknown = events_with_unknown
             
-            # 显示下载按钮
+            # 显示解析结果摘要
             st.success("🎉 解析成功完成!")
+            
+            # 显示统计信息
+            col_stat1, col_stat2, col_stat3 = st.columns(3)
+            with col_stat1:
+                st.metric("总事件数", total_events)
+            with col_stat2:
+                st.metric("包含未知字段的事件", events_with_unknown)
+            with col_stat3:
+                unknown_percentage = (events_with_unknown / total_events * 100) if total_events > 0 else 0
+                st.metric("未知字段占比", f"{unknown_percentage:.1f}%")
+            
+            # 如果有未知字段，显示详细信息
+            if unknown_summary:
+                st.warning("⚠️ 检测到无法解析的字段")
+                with st.expander("查看无法解析的字段详情", expanded=True):
+                    st.markdown("以下字段在日志中出现但未在定义文件中找到对应的解析规则：")
+                    
+                    for subcmd_key, fields in unknown_summary.items():
+                        st.markdown(f"### {subcmd_key}")
+                        field_data = []
+                        for field_key, field_info in fields.items():
+                            field_data.append({
+                                "字段类型ID": field_info['type_id'],
+                                "字段名称": field_info['name'],
+                                "出现次数": field_info['count']
+                            })
+                        st.table(field_data)
+                    
+                    st.info("💡 提示: 您可以在 definitions.py 文件中为这些字段添加解析规则，以获得更详细的解析结果。")
             
             col1, col2 = st.columns(2)
             

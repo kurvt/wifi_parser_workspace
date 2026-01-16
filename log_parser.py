@@ -157,10 +157,12 @@ def parse_struct(payload: bytes, struct_def: Dict) -> List[Dict]:
 
 # --- MODIFIED FUNCTION ---
 # 修改 build_translated_tree 以识别和处理 "struct" 类型
-def build_translated_tree(nlas: List[NLA], subcmd_def: Dict, current_rule_key: Optional[str]) -> List[Dict]:
+def build_translated_tree(nlas: List[NLA], subcmd_def: Dict, current_rule_key: Optional[str], unknown_fields: Optional[List] = None) -> List[Dict]:
     tree = []
     for nla in nlas:
         attr_name = f"Type {nla.type_id} [UNKNOWN]"; data_type = 'hex'; attr_def = None
+        is_unknown = False
+        
         if current_rule_key:
             current_map = subcmd_def.get(current_rule_key, {})
             attr_def = current_map.get(nla.type_id)
@@ -171,8 +173,22 @@ def build_translated_tree(nlas: List[NLA], subcmd_def: Dict, current_rule_key: O
             elif isinstance(attr_def, dict):
                 attr_name = attr_def.get('name', attr_name)
                 data_type = attr_def.get('type', 'hex')
+            else:
+                # 标记为未知字段
+                is_unknown = True
+        else:
+            is_unknown = True
 
         node = {"name": attr_name, "type_id": nla.type_id}
+        
+        # 如果是未知字段，记录下来
+        if is_unknown and unknown_fields is not None:
+            unknown_fields.append({
+                "name": attr_name,
+                "type_id": nla.type_id,
+                "rule_key": current_rule_key
+            })
+            node["is_unknown"] = True
         
         # 检查这是否是我们定义的特殊 "struct" 类型
         is_custom_struct = isinstance(attr_def, dict) and attr_def.get('type') == 'struct'
@@ -190,7 +206,7 @@ def build_translated_tree(nlas: List[NLA], subcmd_def: Dict, current_rule_key: O
         elif nla.is_nested:
             # 否则，如果它是一个标准的嵌套属性，使用旧逻辑
             next_rule_key = get_next_rule_key(subcmd_def, current_rule_key, nla.type_id)
-            node["children"] = build_translated_tree(nla.children, subcmd_def, next_rule_key)
+            node["children"] = build_translated_tree(nla.children, subcmd_def, next_rule_key, unknown_fields)
         else:
             # 否则，它是一个简单值
             value, hex_value = format_data_value(nla.payload, data_type)
@@ -238,6 +254,8 @@ def process_log_file(filename: str, vendor_enums: Dict, args: argparse.Namespace
     handler_re = re.compile(r"nl80211_response_handler:.*subcmd\s+(\d+)")
     data_re = re.compile(r"NL80211_ATTR_VENDOR_DATA.*:\s*(.*)")
     all_parsed_events, current_event_context = [], {}
+    unknown_fields_summary = {}  # 统计未知字段
+    
     try:
         with open(filename, 'r') as f:
             for line_num, line in enumerate(f, 1):
@@ -257,12 +275,38 @@ def process_log_file(filename: str, vendor_enums: Dict, args: argparse.Namespace
                              current_event_context = {}; continue
 
                         nlas = parse_nla(hex_to_bytes(data_match.group(1).strip()))
-                        translated_tree = build_translated_tree(nlas, subcmd_def, initial_rule_key)
+                        unknown_fields = []  # 收集本次事件的未知字段
+                        translated_tree = build_translated_tree(nlas, subcmd_def, initial_rule_key, unknown_fields)
+                        
+                        # 统计未知字段
+                        if unknown_fields:
+                            subcmd_key = f"{ctx['subcmd']}_{subcmd_def.get('name', 'UNKNOWN')}"
+                            if subcmd_key not in unknown_fields_summary:
+                                unknown_fields_summary[subcmd_key] = {}
+                            for uf in unknown_fields:
+                                field_key = f"Type_{uf['type_id']}"
+                                if field_key not in unknown_fields_summary[subcmd_key]:
+                                    unknown_fields_summary[subcmd_key][field_key] = {
+                                        "type_id": uf['type_id'],
+                                        "name": uf['name'],
+                                        "count": 0
+    
+    # 将未知字段统计添加到输出
+    output_data = {
+        "events": all_parsed_events,
+        "unknown_fields_summary": unknown_fields_summary,
+        "total_events": len(all_parsed_events),
+        "events_with_unknown_fields": sum(1 for e in all_parsed_events if e.get("unknown_fields_count", 0) > 0)
+    }
+    
+    if args.output_json: render_to_json(output_data
+                                unknown_fields_summary[subcmd_key][field_key]["count"] += 1
                         
                         event_data = {
                             "line_number": line_num, "handler_timestamp": ctx["handler_timestamp"],
                             "data_timestamp": current_timestamp, "subcmd": ctx["subcmd"],
-                            "subcmd_name": subcmd_def.get("name", "UNKNOWN"), "tree": translated_tree
+                            "subcmd_name": subcmd_def.get("name", "UNKNOWN"), "tree": translated_tree,
+                            "unknown_fields_count": len(unknown_fields)
                         }
                         all_parsed_events.append(event_data)
                         current_event_context = {}
