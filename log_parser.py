@@ -290,16 +290,7 @@ def process_log_file(filename: str, vendor_enums: Dict, args: argparse.Namespace
                                         "type_id": uf['type_id'],
                                         "name": uf['name'],
                                         "count": 0
-    
-    # 将未知字段统计添加到输出
-    output_data = {
-        "events": all_parsed_events,
-        "unknown_fields_summary": unknown_fields_summary,
-        "total_events": len(all_parsed_events),
-        "events_with_unknown_fields": sum(1 for e in all_parsed_events if e.get("unknown_fields_count", 0) > 0)
-    }
-    
-    if args.output_json: render_to_json(output_data
+                                    }
                                 unknown_fields_summary[subcmd_key][field_key]["count"] += 1
                         
                         event_data = {
